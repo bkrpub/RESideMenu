@@ -40,6 +40,8 @@
 @property (assign, readwrite, nonatomic) CGFloat contentViewScaleValue;
 @property (assign, readwrite, nonatomic) CGFloat contentViewInLandscapeOffsetCenterX;
 @property (assign, readwrite, nonatomic) CGFloat contentViewInPortraitOffsetCenterX;
+@property (assign, readwrite, nonatomic) UIEdgeInsets menuViewInsets;
+@property (assign, readwrite, nonatomic) CGFloat contentViewAlpha;
 @property (strong, readwrite, nonatomic) id parallaxMenuMinimumRelativeValue;
 @property (strong, readwrite, nonatomic) id parallaxMenuMaximumRelativeValue;
 @property (strong, readwrite, nonatomic) id parallaxContentMinimumRelativeValue;

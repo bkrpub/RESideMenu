@@ -65,6 +65,9 @@
     _scaleContentView      = YES;
     _contentViewScaleValue = 0.7f;
     
+    _menuViewInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+    _contentViewAlpha = 1.0;
+
     _scaleBackgroundImageView = YES;
   
     _parallaxEnabled = YES;
@@ -85,6 +88,20 @@
         _menuViewController = menuViewController;
     }
     return self;
+}
+
+- (CGRect) menuViewControllerFrame
+{
+    return UIEdgeInsetsInsetRect(self.view.bounds, self.menuViewInsets);
+}
+
+- (void) viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    if( self.visible ) {
+        self.menuViewController.view.frame = [self menuViewControllerFrame];
+    }
+
 }
 
 - (void)viewDidLoad
@@ -156,7 +173,7 @@
         self.backgroundImageView.transform = CGAffineTransformIdentity;
         self.backgroundImageView.frame = self.view.bounds;
     }
-    self.menuViewController.view.frame = self.view.bounds;
+    self.menuViewController.view.frame = [self menuViewControllerFrame];
     self.menuViewController.view.transform = CGAffineTransformMakeScale(1.5f, 1.5f);
     self.menuViewController.view.alpha = 0;
     if (self.scaleBackgroundImageView)
@@ -179,6 +196,8 @@
             self.contentViewController.view.transform = CGAffineTransformMakeScale(self.contentViewScaleValue, self.contentViewScaleValue);
         }
         self.contentViewController.view.center = CGPointMake((UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]) ? self.contentViewInLandscapeOffsetCenterX : self.contentViewInPortraitOffsetCenterX), self.contentViewController.view.center.y);
+
+        self.contentViewController.view.alpha = self.contentViewAlpha;
 
         self.menuViewController.view.alpha = 1.0f;
         self.menuViewController.view.transform = CGAffineTransformIdentity;
@@ -210,6 +229,9 @@
     [UIView animateWithDuration:self.animationDuration animations:^{
         self.contentViewController.view.transform = CGAffineTransformIdentity;
         self.contentViewController.view.frame = self.view.bounds;
+
+        self.contentViewController.view.alpha = 1.0;
+
         self.menuViewController.view.transform = CGAffineTransformMakeScale(1.5f, 1.5f);
         self.menuViewController.view.alpha = 0;
         if (self.scaleBackgroundImageView) {
@@ -340,7 +362,7 @@
             self.backgroundImageView.transform = CGAffineTransformIdentity;
             self.backgroundImageView.frame = self.view.bounds;
         }
-        self.menuViewController.view.frame = self.view.bounds;
+        self.menuViewController.view.frame = [self menuViewControllerFrame];
         [self addContentButton];
         [self.view.window endEditing:YES];
     }
@@ -466,7 +488,7 @@
 {
     if (self.visible) {
         self.contentViewController.view.transform = CGAffineTransformIdentity;
-        self.contentViewController.view.frame = self.view.bounds;
+        self.contentViewController.view.frame = [self menuViewControllerFrame];
         self.contentViewController.view.transform = CGAffineTransformMakeScale(self.contentViewScaleValue, self.contentViewScaleValue);
         self.contentViewController.view.center = CGPointMake((UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation) ? self.contentViewInLandscapeOffsetCenterX : self.contentViewInPortraitOffsetCenterX), self.contentViewController.view.center.y);
     }
